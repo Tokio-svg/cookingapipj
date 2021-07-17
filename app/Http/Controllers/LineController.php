@@ -12,13 +12,29 @@ use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use App\Models\Recipe;
+use App\Models\Material;
+use App\Models\Process;
 
 class LineController extends Controller
 {
     public function test(Request $request)
     {
+        $name = $request->all();
+        // カテゴリー名が一致するレシピを4つ取り出して
+        // タイトル、URLを文字列に含めて返す
+        $items = Recipe::where('category', $name)->take(4)->get();
+        $count = $items->count();
+        $replyText = "";
+        if ($count) {
+            for ($i = 0; $i < $count; $i++) {
+                if (!$items[$i]) break;
+                $replyText = $replyText . "name:{$items[$i]->name}URL:{$items[$i]->id}\n";
+            }
+        } else $replyText = "該当するレシピはありません。";
+
         return response()->json([
-            'message' => 'Test successfully',
+            'data' => $replyText
         ], 200);
     }
 
@@ -49,8 +65,20 @@ class LineController extends Controller
 
                 // 入力した文字取得
                 $message = $event->getText();
+                // カテゴリー名が一致するレシピを4つ取り出して
+                // タイトル、URLを文字列に含めて返す
+                $items = Recipe::where('category', $message)->take(4)->get();
+                $count = $items->count();
+                $replyText = "";
+                if ($count) {
+                    for ($i = 0; $i < $count; $i++) {
+                        if (!$items[$i]) break;
+                        $replyText = $replyText . "name:{$items[$i]->name}URL:{$items[$i]->id}\n";
+                    }
+                } else $replyText = "該当するレシピはありません。";
+                $textMessage = new TextMessageBuilder($replyText);
+
                 $replyToken = $event->getReplyToken();
-                $textMessage = new TextMessageBuilder($message);
                 $lineBot->replyMessage($replyToken, $textMessage);
                 Log::debug('set replyToken OK');
             }
