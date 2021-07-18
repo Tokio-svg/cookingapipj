@@ -18,7 +18,6 @@ class SearchController extends Controller
         $items = Recipe::where('category', $category)->paginate(4);
         return response()->json([
             'data' => $items,
-            // 'num' => $num,
         ], 200);
     }
 
