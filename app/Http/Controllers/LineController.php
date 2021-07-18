@@ -59,21 +59,17 @@ class LineController extends Controller
             $events = $lineBot->parseEventRequest($request->getContent(), $signature);
 
             foreach ($events as $event) {
-                // ログファイルの設定
-                // $file = __DIR__ . "/log.txt"
-                // file_put_contents($file, print_r($event, true) . PHP_EOL, FILE_APPEND);
-
                 // 入力した文字取得
                 $message = $event->getText();
                 // カテゴリー名が一致するレシピを4つ取り出して
                 // タイトル、URLを文字列に含めて返す
                 $items = Recipe::where('category', $message)->take(4)->get();
                 $count = $items->count();
-                $replyText = "";
+                $replyText = "{$count}件のレシピが見つかりました。\n";
                 if ($count) {
                     for ($i = 0; $i < $count; $i++) {
                         if (!$items[$i]) break;
-                        $replyText = $replyText . "name:{$items[$i]->name}URL:{$items[$i]->id}\n";
+                        $replyText = $replyText . "name:{$items[$i]->name}\nURL:{$items[$i]->id}\n";
                     }
                 } else $replyText = "該当するレシピはありません。";
                 $textMessage = new TextMessageBuilder($replyText);

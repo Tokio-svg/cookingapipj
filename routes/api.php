@@ -30,4 +30,4 @@ Route::apiResource('/v1/search/{category}', SearchController::class)->only([
 
 // Line bot用ルーティング
 Route::post('/line/webhook', [LineController::class, 'webhook']);
-Route::post('/line/test', [LineController::class, 'test']);
+// Route::post('/line/test', [LineController::class, 'test']);

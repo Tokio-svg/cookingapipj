@@ -36,7 +36,7 @@ class RecipeController extends Controller
         $data['name'] = $request->recipe_name;
         $data['category'] = $request->category;
         $data['user_id'] = $request->userId;
-        $data['img_path'] = 'test';
+        $data['img_path'] = 'public/no_image.png';
 
         // Log::debug($request->image);
         // 画像ファイル処理
