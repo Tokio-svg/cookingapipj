@@ -22,9 +22,9 @@ class RecipesSeeder extends Seeder
 
         //insert
         for ($i = 0; $i < 10; $i++) {
-            $data['name'] = 'test';
+            $data['name'] = 'test_recipe';
             $data['category'] = '紅茶';
-            $data['img_path'] = 'test';
+            $data['img_path'] = 'no_image.png';
             $data['user_id'] = 1;
 
             $recipe = Recipe::create($data);
