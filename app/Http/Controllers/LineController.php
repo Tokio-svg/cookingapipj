@@ -69,7 +69,7 @@ class LineController extends Controller
                 if ($count) {
                     for ($i = 0; $i < $count; $i++) {
                         if (!$items[$i]) break;
-                        $replyText = $replyText . "name:{$items[$i]->name}\nURL:{$items[$i]->id}\n";
+                        $replyText = $replyText . "name:{$items[$i]->name}\nURL:https://cookingpj-c1d29.web.app/postdetail/{$items[$i]->id}\n";
                     }
                 } else $replyText = "該当するレシピはありません。";
                 $textMessage = new TextMessageBuilder($replyText);
