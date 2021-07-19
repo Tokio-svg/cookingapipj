@@ -6,7 +6,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\LineController;
-// use App\Models\Recipe;
 
 // JWT-auth用ルーティング
 Route::group([
@@ -30,4 +29,3 @@ Route::apiResource('/v1/search/{category}', SearchController::class)->only([
 
 // Line bot用ルーティング
 Route::post('/line/webhook', [LineController::class, 'webhook']);
-// Route::post('/line/test', [LineController::class, 'test']);

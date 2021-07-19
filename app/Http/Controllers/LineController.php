@@ -13,31 +13,9 @@ use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use App\Models\Recipe;
-use App\Models\Material;
-use App\Models\Process;
 
 class LineController extends Controller
 {
-    public function test(Request $request)
-    {
-        $name = $request->all();
-        // カテゴリー名が一致するレシピを4つ取り出して
-        // タイトル、URLを文字列に含めて返す
-        $items = Recipe::where('category', $name)->take(4)->get();
-        $count = $items->count();
-        $replyText = "";
-        if ($count) {
-            for ($i = 0; $i < $count; $i++) {
-                if (!$items[$i]) break;
-                $replyText = $replyText . "name:{$items[$i]->name}URL:{$items[$i]->id}\n";
-            }
-        } else $replyText = "該当するレシピはありません。";
-
-        return response()->json([
-            'data' => $replyText
-        ], 200);
-    }
-
     public function webhook(Request $request)
     {
         $lineAccessToken = env('LINE_ACCESS_TOKEN', "");

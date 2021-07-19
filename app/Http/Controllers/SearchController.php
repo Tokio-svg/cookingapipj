@@ -41,7 +41,6 @@ class SearchController extends Controller
      */
     public function show(Request $request, Recipe $recipe)
     {
-        // $item = Recipe::where('category', $recipe)->get();
         $item = $request;
         if ($item) {
             return response()->json([

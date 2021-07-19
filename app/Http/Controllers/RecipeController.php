@@ -38,7 +38,6 @@ class RecipeController extends Controller
         $data['user_id'] = $request->userId;
         $data['img_path'] = 'no_image.png';
 
-        // Log::debug($request->image);
         // 画像ファイル処理
         if ($request->image) {
             $file_name = time() . '.' . $request->image->getClientOriginalName();
@@ -70,10 +69,8 @@ class RecipeController extends Controller
             Process::create($process_data);
         }
 
-        // $test = $request->materials[0]["material"];
         return response()->json([
             'data' => $item,
-            // 'test' => $request->materials,
         ], 201);
     }
 
@@ -134,11 +131,9 @@ class RecipeController extends Controller
         $item = Recipe::where('id', $recipe->id)->delete();
         $material = Material::where('recipe_id', $recipe->id)->delete();
         $process = Process::where('recipe_id', $recipe->id)->delete();
-        // Log::debug($recipe);
         if ($recipe->img_path != 'test') {
             \File::delete($recipe->img_path);
         }
-        // $item->delete();
         if ($item) {
             return response()->json([
                 'message' => 'Deleted successfully',
