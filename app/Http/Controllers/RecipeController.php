@@ -85,10 +85,10 @@ class RecipeController extends Controller
      */
     public function show(Recipe $recipe)
     {
-        $item = Recipe::with('materials')->with('processes')->with('user')->find($recipe);
+        $item = Recipe::with('materials')->with('processes')->with('user')->find($recipe->id);
         if ($item) {
             return response()->json([
-                'data' => $item
+                'data' => $item,
             ], 200);
         } else {
             return response()->json([
