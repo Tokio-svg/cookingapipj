@@ -63,7 +63,7 @@ class LineController extends Controller
                 $message = $event->getText();
                 // カテゴリー名が一致するレシピを4つ取り出して
                 // タイトル、URLを文字列に含めて返す
-                $items = Recipe::where('category', $message)->take(4)->get();
+                $items = Recipe::where('category', $message)->take(4)->orderBy('id', 'desc')->get();
                 $count = $items->count();
                 $replyText = "{$count}件のレシピが見つかりました。\n";
                 if ($count) {
