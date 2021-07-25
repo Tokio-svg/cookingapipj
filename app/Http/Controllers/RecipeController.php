@@ -36,15 +36,34 @@ class RecipeController extends Controller
         $data['name'] = $request->recipe_name;
         $data['category'] = $request->category;
         $data['user_id'] = $request->userId;
-        $data['img_path'] = $request->image_path;
+        // $data['img_path'] = $request->image_path;
 
-        // 画像ファイル処理(廃止)
-        // if ($request->image) {
-        //     $file_name = time() . '.' . $request->image->getClientOriginalName();
-        //     $request->image->storeAs('public', $file_name);
-
-        //     $data['img_path'] = 'storage/' . $file_name;
-        // }
+        // 画像ファイル処理
+        if ($request->file) {
+            $post_data = [
+                'file' => $request->file,
+            ];
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, 'http://localhost/xfree/catch.php');
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST'); // post
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data); // データを送信
+            // curl_setopt($curl, CURLOPT_HTTPHEADER, $header); // リクエストにヘッダーを含める
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            // curl_setopt($curl, CURLOPT_HEADER, true);  //ヘッダーも出力する
+            $apiResponse = curl_exec($curl);
+            curl_close($curl);
+            if ($apiResponse != 'error') {
+                // 保存に成功したら画像のファイル名を格納
+                $data['img_path'] = $apiResponse;
+            } else {
+                // 保存に失敗したらno_image.pngを格納
+                $data['img_path'] = 'no_image.png';
+            }
+        } else {
+            // fileが無かったらno_image.pngを格納
+            $data['img_path'] = 'no_image.png';
+        }
 
         $item = Recipe::create($data);
         // 格納したレシピのID番号
@@ -90,13 +109,15 @@ class RecipeController extends Controller
         } else {
             // curlで画像apiから画像を呼び出し
             $curl = curl_init();
-            // curl_setopt($curl, CURLOPT_URL, 'http://localhost/xfree/catch.php?file=' . $img_name);
+            // ローカル
+            curl_setopt($curl, CURLOPT_URL, 'http://localhost/xfree/catch.php?file=' . $img_name);
             // XFREEのURL
-            curl_setopt($curl, CURLOPT_URL, 'http://h2iuu2ea.php.xdomain.jp/catch.php?file=' . $img_name);
+            // curl_setopt($curl, CURLOPT_URL, 'http://h2iuu2ea.php.xdomain.jp/catch.php?file=' . $img_name);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET');
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); // 証明書の検証を行わない
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);  // curl_execの結果を文字列で返す
             $apiResponse = curl_exec($curl);  //レスポンス（base64型データor'not_exist'）
+            curl_close($curl);
             if ($apiResponse === 'not_exists') {
                 $apiResponse = '/img/no_image.png';
             } else {
