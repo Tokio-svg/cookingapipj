@@ -44,7 +44,8 @@ class RecipeController extends Controller
                 'file' => $request->file,
             ];
             $curl = curl_init();
-            curl_setopt($curl, CURLOPT_URL, 'http://localhost/xfree/catch.php');
+            // curl_setopt($curl, CURLOPT_URL, 'http://localhost/xfree/catch.php');  // ローカル
+            curl_setopt($curl, CURLOPT_URL, 'http://h2iuu2ea.php.xdomain.jp/catch.php');  // XFREEのURL
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST'); // post
             curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data); // データを送信
             // curl_setopt($curl, CURLOPT_HTTPHEADER, $header); // リクエストにヘッダーを含める
@@ -110,9 +111,9 @@ class RecipeController extends Controller
             // curlで画像apiから画像を呼び出し
             $curl = curl_init();
             // ローカル
-            curl_setopt($curl, CURLOPT_URL, 'http://localhost/xfree/catch.php?file=' . $img_name);
+            // curl_setopt($curl, CURLOPT_URL, 'http://localhost/xfree/catch.php?file=' . $img_name);
             // XFREEのURL
-            // curl_setopt($curl, CURLOPT_URL, 'http://h2iuu2ea.php.xdomain.jp/catch.php?file=' . $img_name);
+            curl_setopt($curl, CURLOPT_URL, 'http://h2iuu2ea.php.xdomain.jp/catch.php?file=' . $img_name);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET');
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); // 証明書の検証を行わない
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);  // curl_execの結果を文字列で返す
