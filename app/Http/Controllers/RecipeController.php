@@ -97,7 +97,7 @@ class RecipeController extends Controller
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); // 証明書の検証を行わない
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);  // curl_execの結果を文字列で返す
             $apiResponse = curl_exec($curl);  //レスポンス（base64型データor'not_exist'）
-            if ($apiResponse === 'not_exist') {
+            if ($apiResponse === 'not_exists') {
                 $apiResponse = '/img/no_image.png';
             }
         }
