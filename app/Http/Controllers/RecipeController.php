@@ -99,6 +99,8 @@ class RecipeController extends Controller
             $apiResponse = curl_exec($curl);  //レスポンス（base64型データor'not_exist'）
             if ($apiResponse === 'not_exists') {
                 $apiResponse = '/img/no_image.png';
+            } else {
+                $apiResponse = 'data:image/png;base64,' . $apiResponse;
             }
         }
 
