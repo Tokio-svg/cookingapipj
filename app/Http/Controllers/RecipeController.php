@@ -36,15 +36,15 @@ class RecipeController extends Controller
         $data['name'] = $request->recipe_name;
         $data['category'] = $request->category;
         $data['user_id'] = $request->userId;
-        $data['img_path'] = 'no_image.png';
+        $data['img_path'] = $request->image_path;
 
-        // 画像ファイル処理
-        if ($request->image) {
-            $file_name = time() . '.' . $request->image->getClientOriginalName();
-            $request->image->storeAs('public', $file_name);
+        // 画像ファイル処理(廃止)
+        // if ($request->image) {
+        //     $file_name = time() . '.' . $request->image->getClientOriginalName();
+        //     $request->image->storeAs('public', $file_name);
 
-            $data['img_path'] = 'storage/' . $file_name;
-        }
+        //     $data['img_path'] = 'storage/' . $file_name;
+        // }
 
         $item = Recipe::create($data);
         // 格納したレシピのID番号
